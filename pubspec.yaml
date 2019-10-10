@@ -1,0 +1,20 @@
+name: li
+description:
+  Tools used by Yuqian Li
+
+author: Yuqian Li <liyuqian@google.com>
+homepage: https://github.com/liyuqian/li
+version: 0.1.0
+
+executables:
+  li: li
+
+dependencies:
+  args: ^1.5.2
+  collection: ^1.14.12
+
+dev_dependencies:
+  test: ^1.6.8
+
+environment:
+  sdk: ">=2.2.2 <3.0.0"
