@@ -1,8 +1,5 @@
 Tools used by Yuqian Li.
 
-Currently, there's only one tool to check if the Skia shader cache is binary
-or SkSL.
-
 # Install
 
 Install [dart](https://dart.dev/get-dart) and then
@@ -13,7 +10,7 @@ pub global activate --source git https://github.com/liyuqian/li.git
 # Run
 
 ```
-pub global run li check_skia_shader <shader-cache-file-or-directory>
+pub global run li
 ```
 
 If pub packages path has been added to `PATH` by
@@ -22,22 +19,9 @@ be omitted:
 
 
 ```
-li check_skia_shader <shader-cache-file-or-directory>
+li
 ```
 
-Sample output:
+# Test and example runs
 
-```
-Found 2 shaders in SkSL type.
-  test/resources/shader_cache/CAZAAAACAAAAAAAAAAAACAAAAAJQAAIADQABIAAPAALQAAAAAAABIAA2AAAAAAAAAAAAAAACAAAAAKAAMMAA
-  test/resources/shader_cache/CAZAAAACAAAAAAAAAAABGAABAAOAAFAADQAAGAAQABSQAAAAAAAAAAAAAABAAAAAEAAGGAA
-
-Found 1 shaders in binary type.
-  test/resources/shader_cache/CAZAAAACAAAAACIAAAABGAABAAOAAAYABQAEMAAAAAAAAAAAAAAAEAAAAAOAAYYA
-
-Found 0 shaders in unknown type.
-```
-
-# Test
-
-See `test/check_skia_shader_test.dart` for some example runs and their expected outputs.
+See `test` directory for some example runs and their expected outputs.

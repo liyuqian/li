@@ -12,9 +12,11 @@ executables:
 dependencies:
   args: ^1.5.2
   collection: ^1.14.12
+  meta: any
 
 dev_dependencies:
   test: ^1.6.8
+  pedantic: ^1.8.0
 
 environment:
   sdk: ">=2.2.2 <3.0.0"

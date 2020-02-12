@@ -1,10 +1,10 @@
 import 'dart:io';
 import 'dart:typed_data';
 
-import 'package:args/command_runner.dart';
 import 'package:collection/collection.dart';
+import 'package:li/single_arg.dart';
 
-class CheckSkiaShader extends Command<void> {
+class CheckSkiaShader extends SinglePositionalArgCommand {
   @override
   String get description => 'Find out if a Skia shader cache is binary or SkSL';
 
@@ -12,18 +12,11 @@ class CheckSkiaShader extends Command<void> {
   String get name => 'check_skia_shader';
 
   @override
-  String get usage {
-    return super.usage.split('\n').map((String line) {
-      return line + (line.startsWith('Usage:') ? ' <cache-file-path-or-directory>' : '');
-    }).join('\n');
-  }
+  String get argName => 'cache-file-path-or-directory';
 
   @override
   Future<void> run() async {
-    if (argResults.rest.length != 1) {
-      print(usage);
-      throw Exception('Exactly one argument <cache-file-path-or-directory> expected.');
-    }
+    checkArgCount();
 
     final String path = argResults.rest[0];
 
@@ -42,7 +35,7 @@ class CheckSkiaShader extends Command<void> {
       }
       for (_ShaderCacheType type in _ShaderCacheType.values) {
         print('Found ${typeMap[type].length} shaders in ${_kTypePrettyNames[type]}.');
-        for (String path in typeMap[type]) {
+        for (String path in typeMap[type]..sort()) {
           print('  $path');
         }
         print('');
