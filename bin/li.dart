@@ -1,5 +1,6 @@
 import 'package:args/command_runner.dart';
 import 'package:li/check_skia_shader.dart';
+import 'package:li/count_name.dart';
 import 'package:li/remove_branch.dart';
 
 void main(List<String> args) {
@@ -9,5 +10,6 @@ void main(List<String> args) {
   );
   runner.addCommand(CheckSkiaShader());
   runner.addCommand(RemoveBranch());
+  runner.addCommand(CountName());
   runner.run(args);
 }
