@@ -17,4 +17,15 @@ void main() {
 {garyq@, liyuqian@, jmccandless@, chinmaygarde@, jimgraham@, ychris@, zsunkun@github.com}
 '''));
   });
+
+  test('Single arg error should be printed.', () {
+    final ProcessResult result = Process.runSync(
+      'dart',
+      <String>[
+        'bin/li.dart',
+        'count_name',
+      ],
+    );
+    expect(result.stderr, contains('Exception: Exactly 1 argument <filename> expected, 0 provided.'));
+  });
 }

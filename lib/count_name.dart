@@ -14,8 +14,8 @@ class CountName extends SinglePositionalArgCommand {
   String get name => 'count_name';
 
   @override
-  void run() {
-    final String input = File(argResults.rest[0]).readAsStringSync();
+  void runWithSingleArg(String arg) {
+    final String input = File(arg).readAsStringSync();
     final List<String> words = input.split(RegExp(r'(\n| |,)'));
     final Set<String> names = words.where((String w) => w.contains('@')).toSet();
     print('${names.length} unique names counted:\n$names');

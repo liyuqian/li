@@ -15,11 +15,7 @@ class CheckSkiaShader extends SinglePositionalArgCommand {
   String get argName => 'cache-file-path-or-directory';
 
   @override
-  Future<void> run() async {
-    checkArgCount();
-
-    final String path = argResults.rest[0];
-
+  Future<void> runWithSingleArg(String path) async {
     if (FileSystemEntity.isFileSync(path)) {
       _ShaderCacheType type = await _getSingleFileType(path);
       print('${_kTypePrettyNames[type]}');

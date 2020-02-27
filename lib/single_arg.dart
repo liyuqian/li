@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:args/command_runner.dart';
@@ -13,8 +14,15 @@ abstract class SinglePositionalArgCommand extends Command<void> {
     }).join('\n');
   }
 
-  @protected
-  void checkArgCount() {
+  FutureOr<void> runWithSingleArg(String arg);
+
+  @override
+  Future<void> run() async {
+    _checkArgCount();
+    await runWithSingleArg(argResults.rest[0]);
+  }
+
+  void _checkArgCount() {
     if (argResults.rest.length != 1) {
       print(usage);
       throw Exception(

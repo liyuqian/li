@@ -11,9 +11,7 @@ class RemoveBranch extends SinglePositionalArgCommand {
   String get argName => 'branch';
 
   @override
-  Future<void> run() async {
-    checkArgCount();
-    final String branch = argResults.rest[0];
+  void runWithSingleArg(String branch) {
     checkedRun('git', ['branch', '-d', branch]);
     checkedRun('git', ['push', 'origin', '--delete', branch]);
   }
