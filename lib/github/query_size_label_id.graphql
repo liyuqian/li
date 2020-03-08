@@ -1,0 +1,7 @@
+query PerfSizeLabelId {
+  repository(owner: "flutter", name: "flutter") {
+    label(name: "perf: app size") {
+      id
+    }
+  }
+}

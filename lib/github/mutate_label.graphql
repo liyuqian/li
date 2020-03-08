@@ -1,0 +1,11 @@
+mutation MutateLabel($issueId: String!, $labelId: String!) {
+  addLabelsToLabelable(
+    input: {labelableId: $issueId, labelIds: [$labelId]}
+  ) {
+    labelable {
+      labels {
+        totalCount
+      }
+    }
+  }
+}

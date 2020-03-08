@@ -1,0 +1,25 @@
+query Issues($after: String) { 
+  repository(owner:"flutter", name:"flutter") {
+    issues(first: 100, after: $after, labels:["a: size"]) {
+      pageInfo {
+        hasNextPage
+        endCursor
+      }
+      edges {
+        node {
+          id
+          title
+          url
+          labels(first: 100) {
+            edges {
+              node {
+                id
+                name
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
