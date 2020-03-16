@@ -4,9 +4,12 @@ import 'package:args/command_runner.dart';
 import 'package:graphql/client.dart';
 import 'package:meta/meta.dart';
 
-abstract class BaseCommand extends Command {
-  BaseCommand() {
-      const String TOKEN_ENV_NAME = 'GITHUB_TOKEN';
+abstract class GithubClientCommand extends Command {
+  static const String TOKEN_ENV_NAME = 'GITHUB_TOKEN';
+
+  @override
+  Future<void> run() async {
+    if (client == null) {
       final String token = Platform.environment[TOKEN_ENV_NAME];
       if (token == null) {
         print('Please set environment variable $TOKEN_ENV_NAME first. Abort.');
@@ -27,7 +30,12 @@ abstract class BaseCommand extends Command {
         cache: InMemoryCache(),
         link: link,
       );
+    }
+
+    await runWithClientReady();
   }
+
+  Future<void> runWithClientReady();
 
   @protected
   GraphQLClient client;

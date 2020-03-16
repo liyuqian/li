@@ -15,7 +15,7 @@ void test() {
   data.repository.label.id;
 }
 
-class LabelSizeCommand extends BaseCommand {
+class LabelSizeCommand extends GithubClientCommand {
   LabelSizeCommand() {
     argParser.addOption(
       _kOptionMaxCount,
@@ -37,7 +37,7 @@ class LabelSizeCommand extends BaseCommand {
   String get name => 'label_size';
 
   @override
-  Future<void> run() async {
+  Future<void> runWithClientReady() async {
     _appSizeLabelId = await _queryAppSizeLabelId();
 
     final int maxCount = int.parse(argResults[_kOptionMaxCount]);
