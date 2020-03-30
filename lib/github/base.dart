@@ -35,6 +35,9 @@ abstract class GithubClientCommand extends Command {
     await runWithClientReady();
   }
 
+  // We won't send in a GraphQLClient client as a parameter because subclasses
+  // may define many methods that use such client. Having it as a protected
+  // class member greatly reduces complexity.
   Future<void> runWithClientReady();
 
   @protected

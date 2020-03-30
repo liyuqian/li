@@ -1,9 +1,16 @@
 import 'package:gql/ast.dart' as _i1;
 
-const PerfSizeLabelId = _i1.OperationDefinitionNode(
+const LabelId = _i1.OperationDefinitionNode(
     type: _i1.OperationType.query,
-    name: _i1.NameNode(value: 'PerfSizeLabelId'),
-    variableDefinitions: [],
+    name: _i1.NameNode(value: 'LabelId'),
+    variableDefinitions: [
+      _i1.VariableDefinitionNode(
+          variable: _i1.VariableNode(name: _i1.NameNode(value: 'name')),
+          type: _i1.NamedTypeNode(
+              name: _i1.NameNode(value: 'String'), isNonNull: true),
+          defaultValue: _i1.DefaultValueNode(value: null),
+          directives: [])
+    ],
     directives: [],
     selectionSet: _i1.SelectionSetNode(selections: [
       _i1.FieldNode(
@@ -25,8 +32,8 @@ const PerfSizeLabelId = _i1.OperationDefinitionNode(
                 arguments: [
                   _i1.ArgumentNode(
                       name: _i1.NameNode(value: 'name'),
-                      value: _i1.StringValueNode(
-                          value: 'perf: app size', isBlock: false))
+                      value:
+                          _i1.VariableNode(name: _i1.NameNode(value: 'name')))
                 ],
                 directives: [],
                 selectionSet: _i1.SelectionSetNode(selections: [
@@ -39,4 +46,4 @@ const PerfSizeLabelId = _i1.OperationDefinitionNode(
                 ]))
           ]))
     ]));
-const document = _i1.DocumentNode(definitions: [PerfSizeLabelId]);
+const document = _i1.DocumentNode(definitions: [LabelId]);

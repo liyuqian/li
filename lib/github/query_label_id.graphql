@@ -1,6 +1,6 @@
-query PerfSizeLabelId {
+query LabelId($name: String!) {
   repository(owner: "flutter", name: "flutter") {
-    label(name: "perf: app size") {
+    label(name: $name) {
       id
     }
   }

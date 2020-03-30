@@ -1,9 +1,15 @@
 import 'package:gql/ast.dart' as _i1;
 
-const Issues = _i1.OperationDefinitionNode(
+const IssuesByLabel = _i1.OperationDefinitionNode(
     type: _i1.OperationType.query,
-    name: _i1.NameNode(value: 'Issues'),
+    name: _i1.NameNode(value: 'IssuesByLabel'),
     variableDefinitions: [
+      _i1.VariableDefinitionNode(
+          variable: _i1.VariableNode(name: _i1.NameNode(value: 'label')),
+          type: _i1.NamedTypeNode(
+              name: _i1.NameNode(value: 'String'), isNonNull: true),
+          defaultValue: _i1.DefaultValueNode(value: null),
+          directives: []),
       _i1.VariableDefinitionNode(
           variable: _i1.VariableNode(name: _i1.NameNode(value: 'after')),
           type: _i1.NamedTypeNode(
@@ -40,7 +46,7 @@ const Issues = _i1.OperationDefinitionNode(
                   _i1.ArgumentNode(
                       name: _i1.NameNode(value: 'labels'),
                       value: _i1.ListValueNode(values: [
-                        _i1.StringValueNode(value: 'a: size', isBlock: false)
+                        _i1.VariableNode(name: _i1.NameNode(value: 'label'))
                       ]))
                 ],
                 directives: [],
@@ -142,4 +148,4 @@ const Issues = _i1.OperationDefinitionNode(
                 ]))
           ]))
     ]));
-const document = _i1.DocumentNode(definitions: [Issues]);
+const document = _i1.DocumentNode(definitions: [IssuesByLabel]);

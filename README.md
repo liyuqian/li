@@ -22,6 +22,13 @@ be omitted:
 li
 ```
 
+# Develop
+
+To auto-gen GraphQL Dart code from graphql files, run
+```
+pub run build_runner build
+```
+
 # Test and example runs
 
 See `test` directory for some example runs and their expected outputs.

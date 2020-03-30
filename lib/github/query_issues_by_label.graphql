@@ -1,6 +1,6 @@
-query Issues($after: String) { 
+query IssuesByLabel($label: String!, $after: String) { 
   repository(owner:"flutter", name:"flutter") {
-    issues(first: 100, after: $after, labels:["a: size"]) {
+    issues(first: 100, after: $after, labels:[$label]) {
       pageInfo {
         hasNextPage
         endCursor
