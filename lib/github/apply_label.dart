@@ -6,10 +6,9 @@ import 'package:li/github/mutate_label.var.gql.dart';
 import 'package:li/github/query_issues_by_label.data.gql.dart';
 import 'package:li/github/query_issues_by_label.op.gql.dart';
 import 'package:li/github/query_issues_by_label.var.gql.dart';
-import 'package:li/github/query_label_id.data.gql.dart';
-import 'package:li/github/query_label_id.op.gql.dart';
-import 'package:li/github/query_label_id.var.gql.dart';
 
+/// Helper class of [ApplyLabelCommand] and [LabelSizeCommand] that applies one
+/// label to all issues with another label.
 class ApplyLabelHandler {
   ApplyLabelHandler(this.client, this.maxCount, this.isVerbose);
 
@@ -62,7 +61,6 @@ class ApplyLabelHandler {
     print('Total number of issues modified:  $addCount');
   }
 
-
   final GraphQLClient client;
   final bool isVerbose;
   final int maxCount;
@@ -99,16 +97,8 @@ class ApplyLabelHandler {
   }
 
   Future<String> _queryLabelId(String labelName) async {
-    final varBuilder = LabelIdVarBuilder();
-    varBuilder.name = labelName;
-    final QueryResult labelIdResult = await client.query(QueryOptions(
-      documentNode: LabelId.document,
-      variables: varBuilder.variables,
-    ));
-    if (labelIdResult.hasException) {
-      throw labelIdResult.exception;
-    }
-    final String id = $LabelId(labelIdResult.data).repository.label.id;
+    final String id =
+        await queryLabelId(client, labelName, kFlutterOwner, kFlutterRepoName);
     if (isVerbose) {
       print('"$labelName" label id: $id');
     }
@@ -131,11 +121,6 @@ class ApplyLabelCommand extends GithubClientCommand {
       defaultsTo: '1',
       help: 'max number of issues to be labeled',
     );
-    argParser.addFlag(
-      _kFlagVerbose,
-      defaultsTo: false,
-      help: 'whether to print verbose debug info',
-    );
   }
 
   @override
@@ -151,7 +136,8 @@ class ApplyLabelCommand extends GithubClientCommand {
       throw ('Option --from and --to must be specified');
     }
     final int maxCount = int.parse(argResults[_kOptionMaxCount]);
-    final handler = ApplyLabelHandler(client, maxCount, argResults[_kFlagVerbose]);
+    final handler =
+        ApplyLabelHandler(client, maxCount, isVerbose);
     await handler.apply(_fromLabel, _toLabel);
   }
 
@@ -161,5 +147,4 @@ class ApplyLabelCommand extends GithubClientCommand {
   static const String _kOptionFrom = 'from';
   static const String _kOptionTo = 'to';
   static const String _kOptionMaxCount = 'max-count';
-  static const String _kFlagVerbose = 'verbose';
 }

@@ -9,6 +9,18 @@ const LabelId = _i1.OperationDefinitionNode(
           type: _i1.NamedTypeNode(
               name: _i1.NameNode(value: 'String'), isNonNull: true),
           defaultValue: _i1.DefaultValueNode(value: null),
+          directives: []),
+      _i1.VariableDefinitionNode(
+          variable: _i1.VariableNode(name: _i1.NameNode(value: 'repoOwner')),
+          type: _i1.NamedTypeNode(
+              name: _i1.NameNode(value: 'String'), isNonNull: true),
+          defaultValue: _i1.DefaultValueNode(value: null),
+          directives: []),
+      _i1.VariableDefinitionNode(
+          variable: _i1.VariableNode(name: _i1.NameNode(value: 'repoName')),
+          type: _i1.NamedTypeNode(
+              name: _i1.NameNode(value: 'String'), isNonNull: true),
+          defaultValue: _i1.DefaultValueNode(value: null),
           directives: [])
     ],
     directives: [],
@@ -19,10 +31,11 @@ const LabelId = _i1.OperationDefinitionNode(
           arguments: [
             _i1.ArgumentNode(
                 name: _i1.NameNode(value: 'owner'),
-                value: _i1.StringValueNode(value: 'flutter', isBlock: false)),
+                value:
+                    _i1.VariableNode(name: _i1.NameNode(value: 'repoOwner'))),
             _i1.ArgumentNode(
                 name: _i1.NameNode(value: 'name'),
-                value: _i1.StringValueNode(value: 'flutter', isBlock: false))
+                value: _i1.VariableNode(name: _i1.NameNode(value: 'repoName')))
           ],
           directives: [],
           selectionSet: _i1.SelectionSetNode(selections: [

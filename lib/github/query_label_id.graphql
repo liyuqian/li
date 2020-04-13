@@ -1,5 +1,5 @@
-query LabelId($name: String!) {
-  repository(owner: "flutter", name: "flutter") {
+query LabelId($name: String!, $repoOwner: String!, $repoName: String!) {
+  repository(owner: $repoOwner, name: $repoName) {
     label(name: $name) {
       id
     }

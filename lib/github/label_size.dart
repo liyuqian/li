@@ -1,4 +1,4 @@
-import 'package:li/github/apply_label.dart';
+import 'package:li/github/apply_label.dart' show ApplyLabelHandler;
 import 'package:li/github/base.dart';
 
 class LabelSizeCommand extends GithubClientCommand {
@@ -7,11 +7,6 @@ class LabelSizeCommand extends GithubClientCommand {
       _kOptionMaxCount,
       defaultsTo: '1',
       help: 'max number of issues to be labeled',
-    );
-    argParser.addFlag(
-      _kFlagVerbose,
-      defaultsTo: false,
-      help: 'whether to print verbose debug info',
     );
   }
 
@@ -25,12 +20,11 @@ class LabelSizeCommand extends GithubClientCommand {
   @override
   Future<void> runWithClientReady() async {
     final int maxCount = int.parse(argResults[_kOptionMaxCount]);
-    final handler = ApplyLabelHandler(client, maxCount, argResults[_kFlagVerbose]);
+    final handler = ApplyLabelHandler(client, maxCount, isVerbose);
     await handler.apply(_kLabelASize, _kLabelPerfAppSize);
   }
 
   static const String _kOptionMaxCount = 'max-count';
-  static const String _kFlagVerbose = 'verbose';
   static const String _kLabelASize = 'a: size';
   static const String _kLabelPerfAppSize = 'perf: app size';
 }

@@ -6,7 +6,7 @@ import 'package:test/test.dart';
 void main() {
   test('Can run help without Github envrionment variable.', () {
     final env = Map<String, String>.from(Platform.environment);
-    env.remove(GithubClientCommand.TOKEN_ENV_NAME);
+    env.remove(GithubClientCommand.kTokenEnvName);
     final result = Process.runSync(
       'dart',
       ['bin/li.dart', '--help'],
