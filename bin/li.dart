@@ -2,6 +2,7 @@ import 'package:args/command_runner.dart';
 import 'package:li/check_skia_shader.dart';
 import 'package:li/count_name.dart';
 import 'package:li/deflake.dart';
+import 'package:li/engine_perf.dart';
 import 'package:li/github.dart';
 import 'package:li/remove_branch.dart';
 
@@ -11,9 +12,10 @@ void main(List<String> args) {
     'Tools used by Yuqian Li.',
   );
   runner.addCommand(CheckSkiaShader());
-  runner.addCommand(RemoveBranch());
   runner.addCommand(CountName());
-  runner.addCommand(GithubCommand());
   runner.addCommand(Deflake());
+  runner.addCommand(EnginePerf());
+  runner.addCommand(GithubCommand());
+  runner.addCommand(RemoveBranch());
   runner.run(args);
 }
