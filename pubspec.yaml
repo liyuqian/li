@@ -16,6 +16,8 @@ dependencies:
   gql_exec: ^0.2.0
   meta: any
   path: any
+  stats: ^1.0.0
+  normal: ^0.5.1
 
 dev_dependencies:
   test: ^1.6.8
