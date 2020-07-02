@@ -1,6 +1,10 @@
 import 'dart:io';
+import 'dart:math' as math;
 
 import 'package:args/command_runner.dart';
+import 'package:meta/meta.dart';
+import 'package:normal/normal.dart';
+import 'package:stats/stats.dart';
 
 class EnginePerf extends Command<void> {
   @override
@@ -78,7 +82,7 @@ class EnginePerf extends Command<void> {
 
     await _compileEngine();
     Directory.current = _frameworkPath + '/dev/devicelab';
-    double sum = 0;
+    final List<double> samples = [];
     for (int i = 0; i < _repetitions; i += 1) {
       print('Running $_taskName (${i + 1}/$_repetitions)');
       for (bool tested = false; !tested;) {
@@ -101,7 +105,7 @@ class EnginePerf extends Command<void> {
       for (final String line in lines) {
         if (pattern.hasMatch(line)) {
           final double metric = double.parse(pattern.firstMatch(line).group(1));
-          sum += metric;
+          samples.add(metric);
           print('Got ${_metricName}: $metric\n');
           found = true;
           break;
@@ -115,17 +119,42 @@ class EnginePerf extends Command<void> {
       File(_kSeparateOutName).deleteSync();
     }
 
-    final double average = sum / _repetitions;
-    bool hasRegression =
-        _smallerIsBetter ? average > _threshold : average < _threshold;
-    if (hasRegression) {
-      print('Regression detected as the average $average crosses the threshold '
-          '${_threshold}');
+    if (analyzeSamplesForRegression(samples,
+        threshold: _threshold, smallerIsBetter: _smallerIsBetter)) {
       exit(1);
-    } else {
-      print('No regression as the average $average is within the threshold '
-          '${_threshold}');
     }
+  }
+
+  /// Return whether the sample average crosses the threshold.
+  static bool analyzeSamplesForRegression(
+    List<double> samples, {
+    @required double threshold,
+    @required bool smallerIsBetter,
+    StringSink out,
+  }) {
+    out ??= stdout;
+    final stats = Stats.fromData(samples);
+    final double average = stats.average;
+    final averageDeviation = stats.standardDeviation / math.sqrt(stats.count);
+    final double gap = (average - threshold).abs();
+    out.writeln('n samples = ${stats.count}');
+    out.writeln('gap = |average - threshold| = |$average - $threshold| = $gap');
+    out.writeln('deviation = ${stats.standardDeviation}');
+    out.writeln('average deviation = deviation / sqrt(n) = $averageDeviation');
+
+    final double p =
+        averageDeviation == 0 ? 1 : 2 * Normal.cdf(-gap / averageDeviation);
+    out.writeln(
+      'Pr(|average of ${stats.count} runs - true average| >= $gap) ~= $p',
+    );
+
+    bool hasRegression =
+        smallerIsBetter ? average > threshold : average < threshold;
+    final String verb = hasRegression ? 'crosses' : 'is within';
+    out.writeln('Regression detected as the average $average $verb the '
+        'threshold ${threshold} with confidence ${1- p}.');
+
+    return hasRegression;
   }
 
   void _checkOptions() {

@@ -18,6 +18,7 @@ int computeReps(int bisectLength, double confidence,
 
   print('statsBefore: $statsBefore');
   print('statsAfter: $statsAfter');
+  print('middle threshold = ${(statsAfter.average + statsBefore.average) / 2}');
 
   final double gap = (statsAfter.average - statsBefore.average).abs();
   final double err = gap / 2;
