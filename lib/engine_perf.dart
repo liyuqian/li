@@ -43,17 +43,23 @@ class EnginePerf extends Command<void> {
           'threshold is a regression',
       defaultsTo: true,
     );
+
+    final bool canGuessPath = Platform.isLinux || Platform.isMacOS;
     argParser.addOption(
       _kFrameworkPathOption,
       abbr: 'f',
       help: 'the path to a local Flutter framework repo checkout',
-      defaultsTo: Platform.environment['HOME'] + '/flutter/flutter/',
+      defaultsTo: canGuessPath
+          ? Platform.environment['HOME'] + '/flutter/flutter/'
+          : null,
     );
     argParser.addOption(
       _kEnginePathOption,
       abbr: 'e',
       help: 'the path to a local Flutter engine repo checkout',
-      defaultsTo: Platform.environment['HOME'] + '/flutter/engine/src/flutter/',
+      defaultsTo: canGuessPath
+          ? Platform.environment['HOME'] + '/flutter/engine/src/flutter/'
+          : null,
     );
     argParser.addFlag(
       _kIsAndroidFlag,
@@ -152,7 +158,7 @@ class EnginePerf extends Command<void> {
         smallerIsBetter ? average > threshold : average < threshold;
     final String verb = hasRegression ? 'crosses' : 'is within';
     out.writeln('Regression detected as the average $average $verb the '
-        'threshold ${threshold} with confidence ${1- p}.');
+        'threshold ${threshold} with confidence ${1 - p}.');
 
     return hasRegression;
   }
@@ -240,5 +246,7 @@ class EnginePerf extends Command<void> {
     _kTaskNameOption,
     _kMetricNameOption,
     _kThresholdOption,
+    _kFrameworkPathOption,
+    _kEnginePathOption,
   ];
 }
