@@ -5,6 +5,7 @@ import 'package:li/deflake.dart';
 import 'package:li/engine_perf.dart';
 import 'package:li/github.dart';
 import 'package:li/remove_branch.dart';
+import 'package:li/lock_timer.dart';
 
 void main(List<String> args) {
   final CommandRunner<void> runner = CommandRunner<void>(
@@ -17,5 +18,6 @@ void main(List<String> args) {
   runner.addCommand(EnginePerf());
   runner.addCommand(GithubCommand());
   runner.addCommand(RemoveBranch());
+  runner.addCommand(LockTimer());
   runner.run(args);
 }
