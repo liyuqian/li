@@ -34,13 +34,16 @@ class LockTimer extends SinglePositionalArgCommand {
       await _beep();
       await Future<void>.delayed(Duration(seconds: 1));
     }
+    ProcessResult result;
     if (Platform.isMacOS) {
-      final result = Process.runSync('pmset', ['displaysleepnow']);
-      if (result.exitCode != 0) {
-        throw 'Unexpected result $result';
-      }
+      result = Process.runSync('pmset', ['displaysleepnow']);
+    } else if (Platform.isWindows) {
+      result = Process.runSync('Rundll32.exe', ['user32.dll,LockWorkStation']);
     } else {
       throw 'We don\'t support screenlock in this platform yet.';
+    }
+    if (result.exitCode != 0) {
+      throw 'Unexpected result $result';
     }
   }
 
