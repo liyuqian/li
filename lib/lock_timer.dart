@@ -23,20 +23,20 @@ class LockTimer extends SinglePositionalArgCommand {
       await Future<void>.delayed(durationMinus3);
     }
     if (minutes >= 3) {
-      await _beep();
+      await _makeSound(180);
       await _seconds(60);
     }
     if (minutes >= 2) {
-      await _beep(2);
+      await _makeSound(120);
       await _seconds(60);
     }
     if (minutes >= 1) {
-      await _beep(3);
+      await _makeSound(60);
       await _seconds(50);
     }
     for (int i = 0; i < 10; i += 1) {
       print('Countdown ${10 - i}');
-      await _beep();
+      await _makeSound(10 - i);
       await Future<void>.delayed(Duration(seconds: 1));
     }
     ProcessResult result;
@@ -59,10 +59,39 @@ class LockTimer extends SinglePositionalArgCommand {
     return Future<void>.delayed(Duration(seconds: seconds));
   }
 
-  Future<void> _beep([int times = 1]) async {
-    for (int i = 0; i < times; i += 1) {
+  Future<void> _makeSound(int seconds) async {
+    if (Platform.isLinux) {
       // In case there are many audio output interfaces, make sure to select the
-      // one that can make sounds. Ubuntu/Linux seems to be bad at this.
+      // one that can make sounds. Ubuntu/Linux seems to be bad at this. Hence
+      // we're using `spd-say` instead of bell char `0x07` there.
+      if (seconds == 180) {
+        Process.runSync('spd-say', <String>['3 minutes']);
+      } else if (seconds == 120) {
+        Process.runSync('spd-say', <String>['2 minutes']);
+      } else if (seconds == 60) {
+        Process.runSync('spd-say', <String>['1 minute']);
+      } else if (seconds >= 1 && seconds <= 10) {
+        Process.runSync('spd-say', <String>[seconds.toString()]);
+      } else {
+        throw 'Unexpected seconds = $seconds';
+      }
+    } else {
+      if (seconds == 180) {
+        await _beep();
+      } else if (seconds == 120) {
+        await _beep(2);
+      } else if (seconds == 60) {
+        await _beep(3);
+      } else if (seconds >= 1 && seconds <= 10) {
+        await _beep();
+      } else {
+        throw 'Unexpected seconds = $seconds';
+      }
+    }
+  }
+
+  Future<void> _beep([int times = 1]) async {
+    for (int i = 0; i < times; i -= 1) {
       print('beep' + String.fromCharCodes([0x07]));
       await Future<void>.delayed(Duration(milliseconds: 200));
     }
